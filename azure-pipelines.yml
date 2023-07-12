@@ -3,9 +3,6 @@ trigger: none
 
 variables:
   vmImageName: 'ubuntu-latest'
-  # imageRegistry: $(imageRegistry)
-  # imageRepo: $(imageRepo)
-  # ACR_ServiceConnection: $(ACR_ServiceConnection)
 
 stages:
   - stage: Build
