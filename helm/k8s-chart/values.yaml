@@ -1,0 +1,30 @@
+replicaCount: 1
+namespace: "dev"
+
+metadata:
+  name: "helm-test-app"
+  image: ""
+
+# Specify the service configuration
+service:
+  type: LoadBalancer
+# Specify resources (CPU and memory) limits for your application
+resources:
+  limits:
+    cpu: 200m
+    memory: 350Mi
+  requests:
+    cpu: 100m
+    memory: 300Mi  
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+## Autoscaling parameters
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPU: 50
+  targetMemory: 50

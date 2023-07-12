@@ -1,0 +1,64 @@
+trigger: none
+  #- main
+
+variables:
+  vmImageName: 'ubuntu-latest'
+  # imageRegistry: $(imageRegistry)
+  # imageRepo: $(imageRepo)
+  # ACR_ServiceConnection: $(ACR_ServiceConnection)
+
+stages:
+  - stage: Build
+    displayName: 'Build image'
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          - task: Docker@2
+            displayName: 'Build Push and Tag image'
+            inputs:
+              containerRegistry: '$(ACR_ServiceConnection)'
+              repository: '$(imageRepo)'
+              command: 'buildAndPush'
+              Dockerfile: '$(Build.SourcesDirectory)/app/Dockerfile'
+              tags: 'test-app-$(Build.BuildId)'
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Helm Chart Artifact'
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/s/helm/k8s-chart'
+              artifact: 'Chart'
+              publishLocation: 'pipeline'
+
+          - task: PowerShell@2
+            displayName: 'Generate values.yaml'
+            inputs:
+              targetType: 'inline'
+              script: |
+                  # Install the required module
+                  Install-Module -Name PowerShell-yaml -Force -AllowClobber -Scope CurrentUser
+
+                  $valuesFilePath = "$(Pipeline.Workspace)/s/helm/k8s-chart/values.yaml"
+                  $values = Get-Content -Path $valuesFilePath -Raw | ConvertFrom-Yaml
+
+                  # Update the desired values
+                  $values.metadata.image = '$(imageRegistry)/$(imageRepo):test-app-$(Build.BuildId)'
+                  
+                  $updatedValues = $values | ConvertTo-Yaml
+
+                  # Save the updated values.yaml file
+                  $updatedValues | Out-File -FilePath $valuesFilePath -Encoding UTF8
+
+                  Write-Host "Updated values.yaml:"
+                  Get-Content -Path $valuesFilePath
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish values.yaml Artifact'
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/s/helm/k8s-chart/values.yaml'
+              artifact: 'helmChartValues'
+              publishLocation: 'pipeline'
+
+
