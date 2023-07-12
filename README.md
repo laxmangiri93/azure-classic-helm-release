@@ -58,3 +58,11 @@ Please note that you should only modify the `values.yaml` file and avoid making 
 For more information on Helm and its capabilities, refer to the official Helm documentation: [https://helm.sh/docs/](https://helm.sh/docs/)
 
 If you have any questions or issues related to this repository or the deployment process, please feel free to open an issue or reach out to the repository owner.
+
+## Azure Pipeline Variables
+Before running the pipeline, make sure to define the following variables in your Azure Pipeline configuration:
+
+ACR_ServiceConnection: The name or ID of the Azure Container Registry (ACR) service connection.
+imageRepo: The name of the repository for the Docker image.
+imageRegistry: The URL or address of the container registry.
+These variables are used within the pipeline to configure the Docker image build and deployment.

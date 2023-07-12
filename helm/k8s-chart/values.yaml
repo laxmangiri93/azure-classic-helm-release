@@ -1,5 +1,5 @@
 replicaCount: 1
-namespace: "dev"
+namespace: "default"
 
 metadata:
   name: "helm-test-app"
@@ -25,6 +25,6 @@ ingress:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 2
   targetCPU: 50
   targetMemory: 50
