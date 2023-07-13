@@ -7,7 +7,7 @@ metadata:
 
 # Specify the service configuration
 service:
-  type: NodePort
+  type: LoadBalancer
 # Specify resources (CPU and memory) limits for your application
 resources:
   limits:
