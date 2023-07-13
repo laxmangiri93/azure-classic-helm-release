@@ -7,7 +7,7 @@ metadata:
 
 # Specify the service configuration
 service:
-  type: LoadBalancer
+  type: NodePort
 # Specify resources (CPU and memory) limits for your application
 resources:
   limits:
@@ -18,7 +18,7 @@ resources:
     memory: 300Mi  
 
 ingress:
-  enabled: true
+  enabled: false
   annotations:
     kubernetes.io/ingress.class: nginx
 ## Autoscaling parameters

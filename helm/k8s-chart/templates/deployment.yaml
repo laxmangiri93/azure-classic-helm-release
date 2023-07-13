@@ -16,10 +16,9 @@ spec:
       containers:
         - name: {{ .Values.metadata.name }}
           image: {{ .Values.metadata.image }}
-          imagePullPolicy: Always
           ports:
             - containerPort: 80
-              #protocol: TCP
+              protocol: TCP
           resources:
             limits:
               cpu: {{ .Values.resources.limits.cpu }}
