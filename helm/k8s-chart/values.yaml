@@ -2,7 +2,7 @@ replicaCount: 1
 namespace: "dev"
 
 metadata:
-  name: "helm-test-app"
+  name: "helm-app"
   image: ""
 
 # Specify the service configuration
